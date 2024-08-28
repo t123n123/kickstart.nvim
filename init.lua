@@ -32,6 +32,8 @@ vim.opt.timeoutlen = 300
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 
+vim.cmd 'set rtp+=/usr/local/opt/fzf'
+
 -- Sets how neovim will display certain whitespace characters in the editor.
 --  See `:help 'list'`
 --  and `:help 'listchars'`
@@ -58,10 +60,10 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 -- is not what someone will guess without a bit more experience.
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
-vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
-vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
-vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
-vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
+-- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
+-- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
+-- vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
+-- vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
@@ -522,33 +524,42 @@ require('lazy').setup({
           goto_node = '<cr>',
           show_help = '?',
         },
+        incremental_selection = {
+          enable = true,
+          keymaps = {
+            init_selection = 'tis',
+            node_incremental = 'tii',
+            scope_incremental = 'ti}',
+            node_decremental = 'tid',
+          },
+        },
       },
+      config = function(_, opts)
+        local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
+
+        require('nvim-treesitter.install').prefer_git = true
+        ---@diagnostic disable-next-line: missing-fields
+        require('nvim-treesitter.configs').setup(opts)
+
+        -- There are additional nvim-treesitter modules that you can use to interact
+        -- with nvim-treesitter. You should go explore a few and see what interests you:
+        --
+        --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
+        --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
+        --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+      end,
     },
-    config = function(_, opts)
-      local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
 
-      require('nvim-treesitter.install').prefer_git = true
-      ---@diagnostic disable-next-line: missing-fields
-      require('nvim-treesitter.configs').setup(opts)
+    require 'kickstart.plugins.debug',
+    require 'kickstart.plugins.indent_line',
+    require 'kickstart.plugins.lint',
+    require 'kickstart.plugins.autopairs',
+    require 'kickstart.plugins.neo-tree',
+    require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
-      -- There are additional nvim-treesitter modules that you can use to interact
-      -- with nvim-treesitter. You should go explore a few and see what interests you:
-      --
-      --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
-      --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
-      --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
-    end,
+    -- Custom plugins go here
+    { import = 'custom.plugins' },
   },
-
-  require 'kickstart.plugins.debug',
-  require 'kickstart.plugins.indent_line',
-  require 'kickstart.plugins.lint',
-  require 'kickstart.plugins.autopairs',
-  require 'kickstart.plugins.neo-tree',
-  require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
-
-  -- Custom plugins go here
-  { import = 'custom.plugins' },
 }, {
 
   ui = {
