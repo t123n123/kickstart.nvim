@@ -2,6 +2,7 @@ return {
   'rhysd/reply.vim',
   'nvim-treesitter/playground',
   'MunifTanjim/nui.nvim',
+<<<<<<< HEAD
   'xiyaowong/transparent.nvim',
   'rhysd/vim-clang-format',
   {
@@ -51,6 +52,9 @@ return {
       vim.keymap.set('n', '<leader>rq', ht.repl.quit, opts)
     end,
   },
+=======
+  'simaxme/java.nvim',
+>>>>>>> e419f72 (java and trouble plugins)
   {
     'folke/trouble.nvim',
     opts = {}, -- for default options, refer to the configuration section for custom setup.
@@ -88,6 +92,7 @@ return {
       },
     },
   },
+<<<<<<< HEAD
   {
     'kylechui/nvim-surround',
     version = '*', -- Use for stability; omit to use `main` branch for the latest features
@@ -104,6 +109,8 @@ return {
       vim.cmd 'colorscheme kanagawa-dragon'
     end,
   },
+=======
+>>>>>>> e419f72 (java and trouble plugins)
   {
     'mfussenegger/nvim-jdtls',
     config = function()
